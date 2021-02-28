@@ -5,7 +5,7 @@ ADMIN and CUSTOMER.We have used three different table to register three main obj
 are inter-connected in such a way that a single dish can be made up of more than one Ingredients and a paticular User(CUSTOMER) can order
 many dishes at once.
 
-## steps to run the API:
+## Steps to run the API:
 
 1. Install requirements.txt 
 2. Run- python manage.py makemigrations
@@ -24,7 +24,7 @@ To perform any of the operations mentioned just add the corresponding relative u
 ## MANAGING THE ACCOUNTS REGISTRATION AND  AUTHENTICATION
 
 
-**Registering a ADMIN**
+### Registering a ADMIN
 
 We can only register admin through the Django admin panel. To acces Django Admin panel you have to create a superuser
 Follows these steps to register an ADMIN user:
