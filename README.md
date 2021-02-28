@@ -19,9 +19,10 @@ many dishes at once.
 Now enter http://127.0.0.1:8000/ in your Browser this will give the details about the functionality offered.
 To perform any of the operations mentioned just add the corresponding relative url to this http://127.0.0.1:8000/ .
 
-*Note : All the endpoints corresponding to Ingredients and Dishes are only accessible to ADMIN. *
+***Note : All the endpoints corresponding to Ingredients and Dishes are only accessible to ADMIN.***
 
 ## MANAGING THE ACCOUNTS REGISTRATION AND  AUTHENTICATION
+
 
 **Registering a ADMIN**
 
@@ -55,7 +56,9 @@ URL - http://127.0.0.1:8000/accounts/logout/  REQUEST-TYPE =[]  **:**
 For this provide the token in the header.The user whose token you entered will be logged out.
 
 
+
 ## OPERATIONS ON INGREDIENTS(ACCESSIBLE ONLY TO ADMINS)
+
 
 **Adding an Ingredient**
 
@@ -64,16 +67,19 @@ This uses POST request and expects name,quantity,quantity_type,cost_price to be 
 and Django adds a primary key by name "id" by default.The quantity_type contains three choices only in which you can enter a single one either 'kg' for
 kilogram ,'lt' for litre and "_" for only numbers.
 
+
 **Get list of all Ingredients**
 
 URL - http://127.0.0.1:8000/ingredients/   REQUEST-TYPE =[GET]    **:**
 This  returns a Json value containing the list of all ingredients.
+
 
 **Getting details of a single Ingredients**
 
 URL - http://127.0.0.1:8000/ingredients/id/ REQUEST-TYPE =[GET]    **:**
 The "id" mentioned in the above url must be an integer referring to the "id" of the ingredient you want to fetch.This returns details of the 
 ingredient you mentioned.
+
 
 **Deleting a single Ingredients**
 
@@ -83,7 +89,9 @@ ingredient you mentioned.
 
 
 
+
 ## OPERATIONS ON MENU(ACCESSIBLE ONLY TO ADMINS)
+
 
 
 **Adding an dish to menu**
@@ -97,7 +105,7 @@ The name needs to be UNIQUE and Django adds a primary key by name "id" by defaul
 URL - http://127.0.0.1:8000/menu/   REQUEST-TYPE =[GET]     **:**
 This  returns a Json value containing the list of details of all  dishes.
 
-*Note-This API depend on the type of User logged in. If the Customer user is logged in than this will the name and prices only*
+***Note-This API depend on the type of User logged in. If the Customer user is logged in than this will the name and prices only***
 
 **Getting details of a single Dish**
 
