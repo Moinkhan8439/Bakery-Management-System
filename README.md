@@ -5,13 +5,12 @@ ADMIN and CUSTOMER.We have used three different table to register three main obj
 are inter-connected in such a way that a single dish can be made up of more than one Ingredients and a paticular User(CUSTOMER) can order
 many dishes at once.
 
-## ps to run the API:
+## steps to run the API:
 
 1. Install requirements.txt 
-2 Run- python manage.py makemigrations
-3 Run- python manage.py migrate
-4 Run- python manage.py runserver
-5 
+2. Run- python manage.py makemigrations
+3. Run- python manage.py migrate
+4. Run- python manage.py runserver 
 
 
 
