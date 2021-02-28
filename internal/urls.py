@@ -1,8 +1,9 @@
 from django.contrib import admin
 from django.urls import path,include
-from .views import (api_overview , IngredientAPI , IngredientDetailAPI , DishAPI , DishDetailAPI , OrderAPI , OrderDetailAPI
-                    , OrderHistoryAPI , ReportSaleAPI
+from .views import (api_overview , IngredientAPI , IngredientDetailAPI , DishAPI , DishDetailAPI , OrderAPI , OrderDetailAPI ,
+                         OrderHistoryAPI , monthly_report
                     )
+
 
 urlpatterns = [
     path('',api_overview,),
@@ -21,5 +22,6 @@ urlpatterns = [
     path('order/history/',OrderHistoryAPI.as_view()),
 
     #reports sales 
-    path('reports/sales/<int:month>/',ReportSaleAPI.as_view()),
+    #path('reports/sales/<int:month>/',ReportSaleAPI.as_view()),
+    path('sales/report/',monthly_report)
 ]

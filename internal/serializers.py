@@ -22,8 +22,6 @@ class OrderSerializer(serializers.ModelSerializer):
         model=Order
         fields = '__all__'
 
-class SaleReportSerializer(serializers.Serializer):
-    total_product_sold=serializers.IntegerField(min_value=0)
-    total_profit=serializers.DecimalField(max_digits=None,min_value=0,decimal_places=2)
+
 
     

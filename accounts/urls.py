@@ -1,9 +1,8 @@
 from django.urls import path
-from .views import (CustomerRegisterAPI , LoginAPI)
-from knox import views as knox_views
+from .views import (CustomerRegisterAPI , user_login,user_logout)
 
 urlpatterns = [
     path('register/',CustomerRegisterAPI.as_view()),
-    path('login/', LoginAPI.as_view()),
-    path('logout/', knox_views.LogoutView.as_view()),
+    path('login/', user_login),
+    path('logout/',user_logout),
 ]

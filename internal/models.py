@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
+
+
 
 # Create your models here.
 class Ingredient(models.Model):
@@ -19,6 +22,8 @@ class Ingredient(models.Model):
     
     #def get_quantity(self):
     #    return str(self.quantity) + self.quantity_type
+
+
 
 
 class Dish(models.Model):
@@ -46,10 +51,13 @@ class Dish(models.Model):
         verbose_name_plural = "Dishes"
 
 
+
+
 class Order(models.Model):
+    date=datetime.today().strftime('%Y-%m-%d')
     order_by=models.ForeignKey(User,on_delete=models.CASCADE)
-    items_ordered=models.ManyToManyField(Dish,blank=False)
-    order_date=models.DateField( auto_now_add=False,editable=True)
+    items_ordered=models.ManyToManyField(Dish,blank=False,help_text='To select multiple hold ctrl and then select')
+    order_date=models.DateField(auto_now_add=False,editable=True,default=date)
 
     def __str__(self):
         return str(self.id) +" / " + str(self.order_date)
