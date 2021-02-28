@@ -52,25 +52,25 @@ For this provide the token in the header.The user whose token you entered will b
 
 ## OPERATIONS ON INGREDIENTS(ACCESSIBLE ONLY TO ADMINS)
 
-**Adding an Ingredient **
+**Adding an Ingredient**
 
 URL - http://127.0.0.1:8000/ingredients/  REQUEST-TYPE =[POST] :
 This uses POST request and expects name,quantity,quantity_type,cost_price to be entered through JSON object or a Form data.The name needs to be UNIQUE
 and Django adds a primary key by name "id" by default.The quantity_type contains three choices only in which you can enter a single one either 'kg' for
 kilogram ,'lt' for litre and "_" for only numbers.
 
-**Get list of all Ingredients **
+**Get list of all Ingredients**
 
 URL - http://127.0.0.1:8000/ingredients/   REQUEST-TYPE =[GET]:
 This  returns a Json value containing the list of all ingredients.
 
-**Getting details of a single Ingredients **
+**Getting details of a single Ingredients**
 
 URL - http://127.0.0.1:8000/ingredients/id/ REQUEST-TYPE =[GET]:
 The "id" mentioned in the above url must be an integer referring to the "id" of the ingredient you want to fetch.This returns details of the 
 ingredient you mentioned.
 
-**Deleting a single Ingredients **
+**Deleting a single Ingredients**
 
 URL - http://127.0.0.1:8000/ingredients/id/ REQUEST-TYPE =[DELETE]:
 The "id" mentioned in the above url must be an integer referring to the "id" of the ingredient you want to fetch.This deletes the 
@@ -81,7 +81,7 @@ ingredient you mentioned.
 ## OPERATIONS ON MENU(ACCESSIBLE ONLY TO ADMINS)
 
 
-**Adding an dish to menu **
+**Adding an dish to menu**
 
 URL - http://127.0.0.1:8000/menu/  REQUEST-TYPE =[POST] :
 This uses POST request and expects name , quantity , description , cost_price , selling_price , ingredients to be entered through JSON object or a Form data.The name needs to be UNIQUE
@@ -93,13 +93,13 @@ URL - http://127.0.0.1:8000/menu/   REQUEST-TYPE =[GET]:
 This  returns a Json value containing the list of details of all  dishes.
 *Note-This API depend on the type of User logged in. If the Customer user is logged in than this will the name and prices only*
 
-**Getting details of a single Dish **
+**Getting details of a single Dish**
 
 URL - http://127.0.0.1:8000/menu/id/ REQUEST-TYPE =[GET]:
 The "id" mentioned in the above url must be an integer referring to the "id" of the Dish you want to fetch.This returns details of the 
 Dish you mentioned.
 
-**Deleting a single Dish **
+**Deleting a single Dish**
 
 URL - http://127.0.0.1:8000/ingredients/id/ REQUEST-TYPE =[DELETE]:
 The "id" mentioned in the above url must be an integer referring to the "id" of the Dish you want to fetch.This deletes the 
