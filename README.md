@@ -21,6 +21,9 @@ To perform any of the operations mentioned just add the corresponding relative u
 
 ***Note : All the endpoints corresponding to Ingredients and Dishes are only accessible to ADMIN.***
 
+
+
+
 ## MANAGING THE ACCOUNTS REGISTRATION AND  AUTHENTICATION
 
 
@@ -57,6 +60,8 @@ For this provide the token in the header.The user whose token you entered will b
 
 
 
+
+
 ## OPERATIONS ON INGREDIENTS(ACCESSIBLE ONLY TO ADMINS)
 
 
@@ -86,6 +91,7 @@ ingredient you mentioned.
 URL - http://127.0.0.1:8000/ingredients/id/ REQUEST-TYPE =[DELETE]   **:**
 The "id" mentioned in the above url must be an integer referring to the "id" of the ingredient you want to fetch.This deletes the 
 ingredient you mentioned.
+
 
 
 
@@ -121,6 +127,8 @@ Dish you mentioned.
 URL - http://127.0.0.1:8000/ingredients/id/ REQUEST-TYPE =[DELETE]    **:**
 The "id" mentioned in the above url must be an integer referring to the "id" of the Dish you want to fetch.This deletes the 
 Dish you mentioned
+
+
 
 
 
