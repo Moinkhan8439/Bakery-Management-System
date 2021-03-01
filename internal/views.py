@@ -82,7 +82,7 @@ class IngredientDetailAPI(generics.RetrieveDestroyAPIView):
         if self.get_queryset().exists():
             self.get_queryset().delete()
             msg={"detail" : "Deleted Successfully"}
-            return Response(msg,status=status.HTTP_204_NO_CONTENT)
+            return Response(msg,status=status.HTTP_200_NO_CONTENT)
         else:
             raise ValidationError("This Ingredients doesn't exist!!")
 
@@ -125,7 +125,7 @@ class DishDetailAPI(generics.RetrieveDestroyAPIView):
         if self.get_queryset():
             self.get_queryset().delete()
             msg={"detail" : "Deleted Successfully"}
-            return Response(msg,status=status.HTTP_204_NO_CONTENT)
+            return Response(msg,status=status.HTTP_200_NO_CONTENT)
         else:
             raise ValidationError("This Dish doesn't exist!!")
 
@@ -168,7 +168,7 @@ class OrderDeleteAPI(generics.RetrieveDestroyAPIView):
     def delete(self,request,*args,**kwargs):
         if self.get_queryset().exists():
             self.get_queryset().delete()
-            return Response("Deleted Successfully",status=status.HTTP_204_NO_CONTENT)
+            return Response("Deleted Successfully",status=status.HTTP_200_NO_CONTENT)
         else:
             raise ValidationError("This Dish doesn't exist!!")
 
