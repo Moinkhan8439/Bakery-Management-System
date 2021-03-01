@@ -1,9 +1,7 @@
 # Bakery Management System
 
-This ** Bakery Management System ** is based on Django Rest framework and Uses the Token Authentications.The API has two types of User 
-ADMIN and CUSTOMER.We have used three different table to register three main objects i.e Ingredients , Dishes and Orders . These tables 
-are inter-connected in such a way that a single dish can be made up of more than one Ingredients and a paticular User(CUSTOMER) can order
-many dishes at once.
+This **Bakery Management System** is based on Django Rest framework and Uses the Token Authentications.
+For better understanding read the documentation at [docs](https://documenter.getpostman.com/view/14584052/TWDdjZYb)
 
 ## Steps to run the API:
 
