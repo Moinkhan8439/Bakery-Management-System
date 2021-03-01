@@ -1,18 +1,23 @@
+from datetime import datetime,date
+
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.db.models import Count
+
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import generics,mixins,status
-from rest_framework.exceptions import ValidationError
-from .models import Ingredient, Dish , Order
-from .serializers import IngredientSerializer,DishSerializer, CustomerDishSerializer , OrderSerializer 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view,permission_classes
-from datetime import datetime,date
-from django.db.models import Count
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
+
+from .models import Ingredient, Dish , Order
+from .serializers import IngredientSerializer,DishSerializer, CustomerDishSerializer , OrderSerializer 
 from internal.utils import months_in_reverse
 from internal.permissions import IsCustomer
 # Create your views here.
+
+
 
 @api_view(['GET'])
 def api_overview(request):
@@ -55,29 +60,29 @@ def api_overview(request):
 
 
 class IngredientAPI(generics.ListCreateAPIView):
+    permission_classes=[IsAdminUser]
     serializer_class = IngredientSerializer
     queryset=Ingredient.objects.all()
-    permission_classes=[IsAdminUser]
+    
     
     def perform_create(self, serializer):
         serializer.save()
 
 
 class IngredientDetailAPI(generics.RetrieveDestroyAPIView):
-    serializer_class = IngredientSerializer
     permission_classes=[IsAdminUser]
+    serializer_class = IngredientSerializer
+    
 
     def get_queryset(self):
         id=self.kwargs['pk']
-        try:
-            return Ingredient.objects.filter(id=id)   
-        except Ingredient.DoesNotExist:
-            raise ValidationError("The Ingredients with this id doesn't exists!")
+        return Ingredient.objects.filter(id=id)   
 
     def delete(self,request,*args,**kwargs):
         if self.get_queryset().exists():
             self.get_queryset().delete()
-            return Response("Deleted Successfully",status=status.HTTP_204_NO_CONTENT)
+            msg={"detail" : "Deleted Successfully"}
+            return Response(msg,status=status.HTTP_204_NO_CONTENT)
         else:
             raise ValidationError("This Ingredients doesn't exist!!")
 
@@ -88,22 +93,25 @@ class IngredientDetailAPI(generics.RetrieveDestroyAPIView):
 
 
 class DishAPI(generics.ListCreateAPIView):
+    permission_classes=[IsAdminUser]
     serializer_class = DishSerializer
     queryset=Dish.objects.all()
-    permission_classes=[IsAdminUser]
+    
     
     def perform_create(self, serializer):
         serializer.save()
 
 class CustomerDishAPI(generics.ListAPIView):
+    permission_classes=[IsAuthenticated]
     serializer_class = CustomerDishSerializer
     queryset=Dish.objects.all()
-    permission_classes=[IsAuthenticated]
+    
     
 
 class DishDetailAPI(generics.RetrieveDestroyAPIView):
-    serializer_class = DishSerializer
     permission_classes=[IsAdminUser]
+    serializer_class = DishSerializer
+    
 
     def get_queryset(self):
         id=self.kwargs['pk']      
@@ -116,7 +124,8 @@ class DishDetailAPI(generics.RetrieveDestroyAPIView):
     def delete(self,request,*args,**kwargs):
         if self.get_queryset():
             self.get_queryset().delete()
-            return Response("Deleted Successfully",status=status.HTTP_204_NO_CONTENT)
+            msg={"detail" : "Deleted Successfully"}
+            return Response(msg,status=status.HTTP_204_NO_CONTENT)
         else:
             raise ValidationError("This Dish doesn't exist!!")
 
@@ -127,21 +136,23 @@ class DishDetailAPI(generics.RetrieveDestroyAPIView):
 
 
 class OrderAPI(generics.CreateAPIView):
+    permission_classes=[IsAuthenticated]
     serializer_class = OrderSerializer
     queryset=Order.objects.all()
-    permission_classes=[IsAuthenticated]
+    
     
     def perform_create(self, serializer):
         serializer.save(order_by=self.request.user)
 
 
 class OrderDeleteAPI(generics.RetrieveDestroyAPIView):
+    permission_classes=[IsAuthenticated]            
     serializer_class = OrderSerializer
     """ 
         By changing the permission class to IsCustomer. We can only allow the Customer to use this 
         View ,Admin user wont be able to use this. IsCustomer is defined in internal/permissions.py    
     """
-    permission_classes=[IsAuthenticated]            
+    
 
     def get_queryset(self):
         id=self.kwargs['pk']
@@ -151,7 +162,7 @@ class OrderDeleteAPI(generics.RetrieveDestroyAPIView):
                 return o
             else:
                 raise ValidationError("You are not authorized for this!")
-        except Order.DoesNotExist:
+        except (Order.DoesNotExist ,IndexError):
                 raise ValidationError("The Order with this id doesn't exists!")
 
     def delete(self,request,*args,**kwargs):
@@ -163,14 +174,13 @@ class OrderDeleteAPI(generics.RetrieveDestroyAPIView):
 
 
 class OrderHistoryAPI(generics.ListAPIView):
-    serializer_class=OrderSerializer
     permission_classes=[IsAuthenticated]
+    serializer_class=OrderSerializer
+    
 
     def get_queryset(self):
-        try:
-            return Order.objects.filter(order_by=self.request.user.username).order_by('-order_date')
-        except Order.DoesNotExist:
-            return Response("Oops!! you haven't ordered yet.Order Now..",status=status.HTTP_204_NO_CONTENT)
+        return Order.objects.filter(order_by=self.request.user.username).order_by('-order_date')
+        
 
 
 
