@@ -4,9 +4,9 @@ from rest_framework.response import Response
 from rest_framework import generics,mixins,status
 from rest_framework.exceptions import ValidationError
 from .models import Ingredient, Dish , Order
-from .serializers import IngredientSerializer,DishSerializer , OrderSerializer 
+from .serializers import IngredientSerializer,DishSerializer, CustomerDishSerializer , OrderSerializer 
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from datetime import datetime,date
 from django.db.models import Count
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
@@ -23,6 +23,7 @@ def api_overview(request):
     }
     MenuDict={
             'To get list of DISHES  REQUEST-TYPE = GET'                    :                '/menu/',
+            'To get list of DISHES for Customer  REQUEST-TYPE = GET'       :                'customer/menu/',
             'Adding a DISH  REQUEST-TYPE = POST'                           :                '/menu/',
             'Detail of single DISH  REQUEST-TYPE = GET'                    :                '/menu/<int:id>/',
             'Deleting a DISH  REQUEST-TYPE = DELETE'                       :                '/menu/<int:id>/',
@@ -34,12 +35,15 @@ def api_overview(request):
             'Deleting an ORDER  REQUEST-TYPE = DELETE'                     :                '/order/<int:id>/',
             'To get ORDER History of single USER REQUEST-TYPE = GET'       :                '/order/history/',
         }
+    
     url_list={
-        'INGREDIENT'                                                        :                 IngredientDict ,
-        'MENU'                                                              :                 MenuDict,
-        'ORDERS'                                                            :                 OrderDict,
+        'ENDPOINTS FOR INGREDIENT'                                          :                 IngredientDict ,
+        'ENDPOINTS FORMENU'                                                 :                 MenuDict,
+        'ENDPOINTS FOR ORDERS'                                              :                 OrderDict,
         'Monthly Sales Report'                                              :                 '/sales/report/',
-        'ADMIN PANEL'                                                       :                 '/admin/'
+        'ADMIN PANEL'                                                       :                 '/admin/',
+        'REGISTER'                                                          :                 'accounts/regsiter/',
+        'LOGIN'                                                             :                 'accounts/login/',
     }
     return Response(url_list)
 
@@ -52,7 +56,7 @@ def api_overview(request):
 class IngredientAPI(generics.ListCreateAPIView):
     serializer_class = IngredientSerializer
     queryset=Ingredient.objects.all()
-    #permission_classes=[IsAuthenticated]
+    permission_classes=[IsAdminUser]
     
     def perform_create(self, serializer):
         serializer.save()
@@ -60,7 +64,7 @@ class IngredientAPI(generics.ListCreateAPIView):
 
 class IngredientDetailAPI(generics.RetrieveDestroyAPIView):
     serializer_class = IngredientSerializer
-    #permission_classes=[IsAdminUser]
+    permission_classes=[IsAdminUser]
 
     def get_queryset(self):
         id=self.kwargs['pk']
@@ -85,15 +89,20 @@ class IngredientDetailAPI(generics.RetrieveDestroyAPIView):
 class DishAPI(generics.ListCreateAPIView):
     serializer_class = DishSerializer
     queryset=Dish.objects.all()
-    #permission_classes=[IsAdminUser]
+    permission_classes=[IsAdminUser]
     
     def perform_create(self, serializer):
         serializer.save()
 
+class CustomerDishAPI(generics.ListAPIView):
+    serializer_class = CustomerDishSerializer
+    queryset=Dish.objects.all()
+    permission_classes=[IsAuthenticated]
+    
 
 class DishDetailAPI(generics.RetrieveDestroyAPIView):
     serializer_class = DishSerializer
-    #permission_classes=[IsAdminUser]
+    permission_classes=[IsAdminUser]
 
     def get_queryset(self):
         id=self.kwargs['pk']      
@@ -116,18 +125,18 @@ class DishDetailAPI(generics.RetrieveDestroyAPIView):
 
 
 
-class OrderAPI(generics.ListCreateAPIView):
+class OrderAPI(generics.CreateAPIView):
     serializer_class = OrderSerializer
     queryset=Order.objects.all()
-    #permission_classes=[IsAuthenticated]
+    permission_classes=[IsAuthenticated]
     
     def perform_create(self, serializer):
-        serializer.save()
+        serializer.save(order_by=self.request.user)
 
 
 class OrderDetailAPI(generics.RetrieveDestroyAPIView):
     serializer_class = OrderSerializer
-    #permission_classes=[IsAuthenticated]
+    permission_classes=[IsAuthenticated]
 
     def get_queryset(self):
         id=self.kwargs['pk']
@@ -146,9 +155,10 @@ class OrderDetailAPI(generics.RetrieveDestroyAPIView):
 
 class OrderHistoryAPI(generics.ListAPIView):
     serializer_class=OrderSerializer
-    #permission_classes=[IsAuthenticated]
+    permission_classes=[IsAuthenticated]
 
     def get_queryset(self):
+        print(self.request.user)
         orders = Order.objects.filter(order_by=self.request.user).order_by('-order_date')
         return orders
 
@@ -157,7 +167,7 @@ class OrderHistoryAPI(generics.ListAPIView):
 #------------------------------------------------MONTHLY-SALES-REPORT-VIEW-------------------------------------------------
 
 
-
+@permission_classes([IsAdminUser])
 @api_view(['GET'])
 def monthly_report(request):
     cur_year=datetime.today().year

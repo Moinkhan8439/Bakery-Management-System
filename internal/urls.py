@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path,include
-from .views import (api_overview , IngredientAPI , IngredientDetailAPI , DishAPI , DishDetailAPI , OrderAPI , OrderDetailAPI ,
-                         OrderHistoryAPI , monthly_report
+from .views import (api_overview , IngredientAPI , IngredientDetailAPI , DishAPI , CustomerDishAPI ,  DishDetailAPI , OrderAPI ,
+                     OrderDetailAPI ,OrderHistoryAPI , monthly_report
                     )
 
 
@@ -14,6 +14,7 @@ urlpatterns = [
 
     #URLS FOR Menu 
     path('menu/',DishAPI.as_view()),
+    path('customer/menu/',CustomerDishAPI.as_view()),
     path('menu/<int:pk>/',DishDetailAPI.as_view()),
 
     #URLS FOR ORDER 

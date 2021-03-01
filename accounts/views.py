@@ -2,10 +2,9 @@ from django.shortcuts import render
 from accounts.serializers import CustomerRegister , UserLoginSerializer
 from rest_framework.response import Response
 from rest_framework import generics,status,permissions
-from django.contrib.auth import login,logout
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from django.contrib.auth.models import User,auth
+from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated,AllowAny
 
@@ -42,18 +41,20 @@ class LoginAPI(generics.CreateAPIView):
 
 
 
-@api_view(['POST'])       
-def user_login(request):
-    serializer=UserLoginSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        login(username=request.data['username'],password=request.data['password'])
-    data = {'success': 'Sucessfully logged out'}
-    print(request.user)
-    return Response(data=data, status=status.HTTP_200_OK)
+class LoginAPI(APIView):
+    serializer_class=UserLoginSerializer
+
+    def post(self,request):
+        serializer=UserLoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key},status=status.HTTP_200_OK)
 
 
 #----------------------------------------------------USER-LOGOUT-VIEW-----------------------------------------------------
 
+"""
 
 @api_view(['GET'])       
 def user_logout(request):
@@ -62,3 +63,5 @@ def user_logout(request):
     data = {'success': 'Sucessfully logged out'}
     print(request.user)
     return Response(data=data, status=status.HTTP_200_OK)
+
+"""

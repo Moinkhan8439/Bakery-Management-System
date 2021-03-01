@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import (CustomerRegisterAPI , user_login,user_logout)
+from .views import (CustomerRegisterAPI , LoginAPI)
 
 urlpatterns = [
     path('register/',CustomerRegisterAPI.as_view()),
-    path('login/', user_login),
-    path('logout/',user_logout),
+    path('login/', LoginAPI.as_view()),
+    #path('logout/',user_logout),
 ]
