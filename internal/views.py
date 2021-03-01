@@ -11,6 +11,7 @@ from datetime import datetime,date
 from django.db.models import Count
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from internal.utils import months_in_reverse
+from internal.permissions import IsCustomer
 # Create your views here.
 
 @api_view(['GET'])
@@ -134,16 +135,25 @@ class OrderAPI(generics.CreateAPIView):
         serializer.save(order_by=self.request.user)
 
 
-class OrderDetailAPI(generics.RetrieveDestroyAPIView):
+class OrderDeleteAPI(generics.RetrieveDestroyAPIView):
     serializer_class = OrderSerializer
-    permission_classes=[IsAuthenticated]
+    """ 
+        By changing the permission class to IsCustomer. We can only allow the Customer to use this 
+        View ,Admin user wont be able to use this. IsCustomer is defined in internal/permissions.py    
+    """
+    permission_classes=[IsAuthenticated]            
 
     def get_queryset(self):
         id=self.kwargs['pk']
         try:
-            return Order.objects.filter(id=id)   
+            o=Order.objects.filter(id=id)
+            print(self.request.user.username , o[0].order_by)
+            if(self.request.user.username == o[0].order_by):
+                return o
+            else:
+                raise ValidationError("You are not authorized for this!")
         except Order.DoesNotExist:
-            raise ValidationError("The Ingredients with this id doesn't exists!")
+                raise ValidationError("The Order with this id doesn't exists!")
 
     def delete(self,request,*args,**kwargs):
         if self.get_queryset().exists():
@@ -159,7 +169,7 @@ class OrderHistoryAPI(generics.ListAPIView):
 
     def get_queryset(self):
         print(self.request.user)
-        orders = Order.objects.filter(order_by=self.request.user).order_by('-order_date')
+        orders = Order.objects.filter(order_by=self.request.user.username).order_by('-order_date')
         return orders
 
 
@@ -167,8 +177,9 @@ class OrderHistoryAPI(generics.ListAPIView):
 #------------------------------------------------MONTHLY-SALES-REPORT-VIEW-------------------------------------------------
 
 
-@permission_classes([IsAdminUser])
+
 @api_view(['GET'])
+@permission_classes([IsAdminUser])
 def monthly_report(request):
     cur_year=datetime.today().year
     cur_month=datetime.today().month

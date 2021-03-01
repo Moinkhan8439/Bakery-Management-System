@@ -9,12 +9,12 @@ class Ingredient(models.Model):
     QUANTITY_CHOICES = [
         ('kg', 'Kilogram'),
         ('lt', 'Litre'),
-        ('no.', ''),
+        ('no.', '-'),
     ]
 
     name=models.CharField(max_length=50,blank=False,unique=True)                #Name of Ingredient
     quantity=models.PositiveIntegerField(default=0)                             #Quantity Available
-    quantity_type=models.TextField(choices=QUANTITY_CHOICES,default='_')        #Type of Quantity['kg','lt or ' ' ]
+    quantity_type=models.TextField(choices=QUANTITY_CHOICES,default='no.')      #Type of Quantity['kg','lt or ' ' ]
     cost_price=models.DecimalField(max_digits=10, decimal_places=2)             #Cost Price of the Ingredient
 
     #This function make sures that if we print the  name of the Ingredient will be printed
@@ -23,6 +23,8 @@ class Ingredient(models.Model):
     
     #def get_quantity(self):
     #    return str(self.quantity) + self.quantity_type
+    def get_natural_key(self):
+        return self.name
 
 
 
@@ -47,6 +49,9 @@ class Dish(models.Model):
     def profit(self):
         result=self.selling_price - self.cost_price
         return result
+
+    def get_natural_key(self):
+        return self.name
 
     class Meta:
         verbose_name_plural = "Dishes"
