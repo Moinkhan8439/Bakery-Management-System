@@ -147,7 +147,6 @@ class OrderDeleteAPI(generics.RetrieveDestroyAPIView):
         id=self.kwargs['pk']
         try:
             o=Order.objects.filter(id=id)
-            print(self.request.user.username , o[0].order_by)
             if(self.request.user.username == o[0].order_by):
                 return o
             else:
@@ -168,9 +167,11 @@ class OrderHistoryAPI(generics.ListAPIView):
     permission_classes=[IsAuthenticated]
 
     def get_queryset(self):
-        print(self.request.user)
-        orders = Order.objects.filter(order_by=self.request.user.username).order_by('-order_date')
-        return orders
+        try:
+            return Order.objects.filter(order_by=self.request.user.username).order_by('-order_date')
+        except Order.DoesNotExist:
+            return Response("Oops!! you haven't ordered yet.Order Now..",status=status.HTTP_204_NO_CONTENT)
+
 
 
 
