@@ -22,34 +22,36 @@ from internal.permissions import IsCustomer
 @api_view(['GET'])
 def api_overview(request):
     IngredientDict={
-            'To get list of Ingrdients  REQUEST-TYPE = GET'                :                '/ingredients/',
-            'Adding an Ingredient  REQUEST-TYPE = POST'                    :                '/ingredients/',
-            'Detail of single Ingrdient  REQUEST-TYPE = GET'               :                '/ingredients/<int:id>/',
-            'Deleting an Ingredient  REQUEST-TYPE = DELETE'                :                '/ingredients/<int:id>/',
+            'To get list of Ingrdients  REQUEST-TYPE = GET              '  :                '/ingredients/',
+            'Adding an Ingredient  REQUEST-TYPE = POST                  '  :                '/ingredients/',
+            'Detail of single Ingrdient  REQUEST-TYPE = GET             '  :                '/ingredients/<int:id>/',
+            'Deleting an Ingredient  REQUEST-TYPE = DELETE              '  :                '/ingredients/<int:id>/',
     }
     MenuDict={
-            'To get list of DISHES  REQUEST-TYPE = GET'                    :                '/menu/',
-            'To get list of DISHES for Customer  REQUEST-TYPE = GET'       :                'customer/menu/',
-            'Adding a DISH  REQUEST-TYPE = POST'                           :                '/menu/',
-            'Detail of single DISH  REQUEST-TYPE = GET'                    :                '/menu/<int:id>/',
-            'Deleting a DISH  REQUEST-TYPE = DELETE'                       :                '/menu/<int:id>/',
+            'To get list of DISHES  REQUEST-TYPE = GET                  '  :                '/menu/',
+            'To get list of DISHES for Customer  REQUEST-TYPE = GET     '  :                'customer/menu/',
+            'Adding a DISH  REQUEST-TYPE = POST                         '  :                '/menu/',
+            'Detail of single DISH  REQUEST-TYPE = GET                  '  :                '/menu/<int:id>/',
+            'Deleting a DISH  REQUEST-TYPE = DELETE                     '  :                '/menu/<int:id>/',
     }
     OrderDict={
-            'To get list of ORDERS  REQUEST-TYPE = GET'                    :                '/order/',
-            'Adding an ORDER  REQUEST-TYPE = POST'                         :                '/order/',
-            'Detail of single ORDER  REQUEST-TYPE = GET'                   :                '/order/<int:id>/',
-            'Deleting an ORDER  REQUEST-TYPE = DELETE'                     :                '/order/<int:id>/',
-            'To get ORDER History of single USER REQUEST-TYPE = GET'       :                '/order/history/',
+            'To get list of ORDERS  REQUEST-TYPE = GET                  '  :                '/order/',
+            'Adding an ORDER  REQUEST-TYPE = POST                       '  :                '/order/',
+            'Detail of single ORDER  REQUEST-TYPE = GET                 '  :                '/order/<int:id>/',
+            'Deleting an ORDER  REQUEST-TYPE = DELETE                   '  :                '/order/<int:id>/',
+            'To get ORDER History of single USER REQUEST-TYPE = GET     '  :                '/order/history/',
         }
     
     url_list={
-        'ENDPOINTS FOR INGREDIENT'                                          :                 IngredientDict ,
-        'ENDPOINTS FORMENU'                                                 :                 MenuDict,
-        'ENDPOINTS FOR ORDERS'                                              :                 OrderDict,
-        'Monthly Sales Report'                                              :                 '/sales/report/',
-        'ADMIN PANEL'                                                       :                 '/admin/',
-        'REGISTER'                                                          :                 'accounts/regsiter/',
-        'LOGIN'                                                             :                 'accounts/login/',
+        
+        'ADMIN PANEL                                                    '  :                 '/admin/',
+        'REGISTER                                                       '  :                 'accounts/regsiter/',
+        'LOGIN                                                          '  :                 'accounts/login/',
+        'Monthly Sales Report                                           '  :                 '/sales/report/',
+        'ENDPOINTS FOR INGREDIENT                                       '  :                 IngredientDict ,
+        'ENDPOINTS FOR MENU                                             '  :                 MenuDict,
+        'ENDPOINTS FOR ORDERS                                           '  :                 OrderDict,
+                                                                     
     }
     return Response(url_list)
 
