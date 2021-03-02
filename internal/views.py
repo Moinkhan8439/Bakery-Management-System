@@ -203,7 +203,8 @@ def monthly_report(request):
     d=dict()
     for i in k:
         year=cur_year if cur_month - i >0  else cur_year-1
-        dt=date(year,int(i),1)
+        
+        #This query willreturn queryset with the product sold and count of each product sold.
         p=Order.objects.all().values('items_ordered').annotate(count=Count('items_ordered'),).filter(order_date__month=int(i))
         total_profit=0
         total_sold=0
@@ -214,11 +215,19 @@ def monthly_report(request):
             dish=Dish.objects.filter(id=item)[0]
             total_profit+=dish.profit()*c
             total_sold+=c
+
+            #adding no. of product sold per month to per_monthly_record
             per_monthly_record[dish.name]=c
+
+        #adding total profit made and total products sold during a month to per_monthly_record
         per_monthly_record['total_product_sold']=total_sold
         per_monthly_record['total_profit']=total_profit
-        if(total_sold != 0):
-            d[str(dt)]=per_monthly_record
+
+        #creating which month and year we are currently posting the record for
+        dt=date(year,int(i),1)
+        
+        #finally adding the per_month_record with the detail of the month to the dictionary to be diplayed
+        d[str(dt)]=per_monthly_record
     return JsonResponse(d)
         
         

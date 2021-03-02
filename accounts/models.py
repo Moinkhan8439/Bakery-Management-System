@@ -8,19 +8,6 @@ from django.utils import timezone
 
 class AdminsManager(BaseUserManager):
     
-    def create_user(self,username, email, password, **extra_fields):
-        """
-        Create and save a User with the given email and password.
-        """
-        if not email:
-            raise ValueError(_('The Email must be set'))
-        email = self.normalize_email(email)
-        user = self.model(email=email,**extra_fields)
-        user.set_password(password)
-        user.is_staff=True
-        user.save()
-        return user
-
     def get_queryset(self):
         return User.get_queryset().filter(is_staff=True)
 
@@ -28,20 +15,12 @@ class AdminsManager(BaseUserManager):
 
 class CustomerManager(BaseUserManager):
 
-    def create_user(self,username, email, password, **extra_fields):
-        """
-        Create and save a User with the given email and password.
-        """
-        if not email:
-            raise ValueError(_('The Email must be set'))
-        email = self.normalize_email(email)
-        user = self.model(email=email, is_staff=False,is_active=True,**extra_fields)
-        user.set_password(password)
-        user.save()
-        return user
-    
     def get_queryset(self):
         return super(CustomerManager, self).get_queryset().filter(is_staff=False)
+
+
+
+    
 
 
 
