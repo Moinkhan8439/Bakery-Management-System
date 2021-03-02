@@ -1,7 +1,8 @@
 # Bakery Management System
 
 This **Bakery Management System** is based on Django Rest framework and Uses the Token Authentications.
-For better understanding read the documentation at [docs](https://documenter.getpostman.com/view/14584052/TWDdjZYb)
+For better understanding read the documentation at [docs](https://documenter.getpostman.com/view/14584052/TWDdjZYb).<br>
+The project is live at [Bakery](https://bakery-management-api.herokuapp.com/).
 
 ## Steps to run the API:
 
